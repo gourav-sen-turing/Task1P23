@@ -413,4 +413,3 @@ table only one schema and it is defined in `db = Gino(schema="prefix--schema-nam
 **v0.2.0**
 1. Valid generating columns in models: autoincrement, default, type, arrays, unique, primary key and etc.
 2. Added creating __table_args__ for indexes
-# Task1P23
