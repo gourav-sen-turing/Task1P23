@@ -97,14 +97,30 @@ def generate_models_file(
 ) -> str:
     """ method to prepare full file with all Models &  """
     models_str = ""
-    generator = get_generator_by_type(models_type)
     header = ""
+    
+    # Check if we have only enums and no tables - set models_type to enum
+    if not data["tables"] and data["types"] and models_type not in ["enum"]:
+        models_type = "enum"
+    
+    # Only get generator if we have tables or if explicitly requested for enum
+    generator = None
+    if data["tables"] or models_type != "enum":
+        try:
+            generator = get_generator_by_type(models_type)
+        except ValueError:
+            if models_type == "enum" and not data["tables"]:
+                # It's ok, we're generating enum-only
+                pass
+            else:
+                raise
+    
     if data["types"]:
         types_generator = enum.ModelGenerator(data["types"])
         models_str += types_generator.create_types()
         header += types_generator.create_header()
-    if data["tables"]:
-
+    
+    if data["tables"] and generator:
         add_custom_types_to_generator(data["types"], generator)
 
         for table in data["tables"]:
@@ -116,8 +132,7 @@ def generate_models_file(
                 defaults_off=defaults_off,
             )
         header += generator.create_header(data["tables"], schema=schema_global)
-    else:
-        models_type = "enum"
+    
     output = render_jinja2_template(models_type, models_str, header)
     return output
 

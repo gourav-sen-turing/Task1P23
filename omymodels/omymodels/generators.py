@@ -7,6 +7,7 @@ from omymodels.models.pydantic import core as p
 from omymodels.models.dataclass import core as d
 from omymodels.models.sqlalchemy import core as s
 from omymodels.models.sqlalchemy_core import core as sc
+from omymodels.models.enum import core as e
 
 
 models = {
@@ -15,6 +16,7 @@ models = {
     "dataclass": d,
     "sqlalchemy": s,
     "sqlalchemy_core": sc,
+    "enum": e,  # Added enum support
 }
 
 

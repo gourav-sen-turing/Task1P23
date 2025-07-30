@@ -18,7 +18,7 @@ def pluralize(word: str) -> str:
         word = re.sub("$", "es", word)
     elif re.search("[^aeioudgkprt]h$", word):
         word = re.sub("$", "es", word)
-    elif re.search("[^aeiou]y$", word):  # Fixed: consonant + y, not vowel + y
+    elif re.search("[^aeiou]y$", word):  # Fixed: consonant + y -> ies (not vowel + y)
         word = re.sub("y$", "ies", word)
     else:
         word = word + "s"

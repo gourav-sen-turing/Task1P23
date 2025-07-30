@@ -74,12 +74,12 @@ class ModelGenerator:
                 column.default = "datetime.datetime.now()"
             elif "'" not in column.default:
                 column.default = f"'{column.default}'"  # Fixed: use attribute notation
-        # Fix boolean values
-        elif column.type.lower() in ('bool', 'boolean'):
-            if str(column.default).lower() == 'true':
-                column.default = 'True'
-            elif str(column.default).lower() == 'false':
-                column.default = 'False'
+        elif column.type.upper() == "BOOLEAN":
+            # Handle boolean defaults - convert to Python boolean
+            if column.default.lower() in ['true', '1', 't']:
+                column.default = "True"
+            elif column.default.lower() in ['false', '0', 'f']:
+                column.default = "False"
         column_str += pt.pydantic_default_attr.format(default=column.default)
         return column_str
 
